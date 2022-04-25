@@ -1,0 +1,76 @@
+plugins {
+    id 'java'
+    id 'eclipse-wtp'
+    id 'war'
+}
+
+sourceCompatibility = 11
+targetCompatibility = 11
+
+version = '1.0'
+
+def vers = [
+    spring: '5.3.18',
+    servlet: '4.0.1',
+    jsp: '2.3.3',
+    jstl: '1.2.2',
+    mybatis: '2.0.7',
+    hibernate: '5.6.8.Final',
+    jackson: '2.13.2.2',
+    lombok: '1.18.24'
+]
+
+
+repositories {
+    mavenCentral()
+}
+
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'Gradle Quickstart',
+                   'Implementation-Version': version
+    }
+}
+
+dependencies {
+
+    // This dependency is used internally, and not exposed to consumers on their own compile classpath.
+    implementation 'com.google.guava:guava:29.0-jre'
+
+    // Use JUnit test framework
+    testImplementation 'junit:junit:4.13'
+    
+    // # Spring
+    implementation group: 'org.springframework', name: 'spring-webmvc', version: "${vers.spring}"
+    implementation group: 'org.springframework', name: 'spring-orm', version: "${vers.spring}"
+    implementation group: 'org.springframework', name: 'spring-oxm', version: "${vers.spring}"
+
+    // # Web
+    compileOnly group: 'javax.servlet', name: 'javax.servlet-api', version: "${vers.servlet}"
+    compileOnly group: 'javax.servlet.jsp', name: 'javax.servlet.jsp-api', version: "${vers.jsp}"
+    implementation group: 'javax.servlet.jsp.jstl', name: 'javax.servlet.jsp.jstl-api', version: "${vers.jstl}"
+    
+    // # MyBatis
+    implementation group: 'org.mybatis', name: 'mybatis-spring', version: "${vers.mybatis}"
+    
+    // # Hibernate
+    implementation group: 'org.hibernate', name: 'hibernate-core', version: "${vers.hibernate}"
+    
+    // # JSON
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: "${vers.jackson}"
+    
+    // # Lombok
+    compileOnly group: 'org.projectlombok', name: 'lombok', version: "${vers.lombok}"
+    
+}
+
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+
+uploadArchives {
+    repositories {
+        flatDir {
+            dirs 'repos'
+        }
+    }
+}
