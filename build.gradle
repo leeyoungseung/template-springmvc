@@ -4,8 +4,8 @@ plugins {
     id 'war'
 }
 
-sourceCompatibility = 11
-targetCompatibility = 11
+sourceCompatibility = '11'
+targetCompatibility = '11'
 
 version = '1.0'
 
@@ -17,9 +17,18 @@ def vers = [
     mybatis: '2.0.7',
     hibernate: '5.6.8.Final',
     jackson: '2.13.2.2',
-    lombok: '1.18.24'
+    lombok: '1.18.24',
+    slf4j: '1.7.5',
+    log4j: '2.17.2'
 ]
 
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+
+	all*.exclude module : 'commons-logging'
+}
 
 repositories {
     mavenCentral()
@@ -39,7 +48,7 @@ dependencies {
 
     // Use JUnit test framework
     testImplementation 'junit:junit:4.13'
-    
+
     // # Spring
     implementation group: 'org.springframework', name: 'spring-webmvc', version: "${vers.spring}"
     implementation group: 'org.springframework', name: 'spring-orm', version: "${vers.spring}"
@@ -49,19 +58,25 @@ dependencies {
     compileOnly group: 'javax.servlet', name: 'javax.servlet-api', version: "${vers.servlet}"
     compileOnly group: 'javax.servlet.jsp', name: 'javax.servlet.jsp-api', version: "${vers.jsp}"
     implementation group: 'javax.servlet.jsp.jstl', name: 'javax.servlet.jsp.jstl-api', version: "${vers.jstl}"
-    
+
     // # MyBatis
     implementation group: 'org.mybatis', name: 'mybatis-spring', version: "${vers.mybatis}"
-    
+
     // # Hibernate
     implementation group: 'org.hibernate', name: 'hibernate-core', version: "${vers.hibernate}"
-    
+
     // # JSON
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: "${vers.jackson}"
-    
+
     // # Lombok
     compileOnly group: 'org.projectlombok', name: 'lombok', version: "${vers.lombok}"
-    
+
+    implementation group: 'org.slf4j', name: 'jcl-over-slf4j', version: "${vers.slf4j}"
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: "${vers.log4j}"
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: "${vers.log4j}"
+
+
+
 }
 
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
